@@ -29,7 +29,21 @@ app.on('ready', function() {
 const mainMenuTemplate = [
     // first object is going to be the file
     {
-        label: 'File'
+        label: 'File', // the heading/label of the menu tab
+        submenu:[
+            {
+                label: "Add Item"
+            },
+            {
+                label: "Clear Items"
+            },
+            {
+                label: "Quit", // Click File ---
+                click() {//                     --> Click Quit
+                    app.quit(); 
+                }
+            }
+        ]
     }
 ];
 
