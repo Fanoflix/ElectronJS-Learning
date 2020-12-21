@@ -46,6 +46,11 @@ function createAddWindow(){
         protocol: 'file:',
         slashes: true
     }));
+
+    // (10) Garbage Collection Handle - When we close the small window, we want to set the "addWindow" variable to null, because if we don't, it'll keep taking up memory space.
+    addWindow.on('closed', () =>{
+        addWindow = null;
+    })
 };
 
 // (4) CREATE MENU TEMPLATE
