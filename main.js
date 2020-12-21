@@ -5,6 +5,7 @@ const path = require('path'); // using this at line 16
 const {app, BrowserWindow, Menu} = electron; // (5) Import Menu from electron
 
 let mainWindow;
+let addWindow; // (9)
 
 // (1) Listen for app to be ready
 app.on('ready', function() {
@@ -24,6 +25,24 @@ app.on('ready', function() {
     Menu.setApplicationMenu(mainMenu)
 });
 
+// (8) Handle create add window
+// Create a new window, with the same steps,
+// - Add a new BrowserWindow
+// - Load the HTML file using loadURL
+function createAddWindow(){
+    addWindow = new BrowserWindow({ // this time we'll provide it with some options like height, width etc;
+        width: 400,
+        height: 200,
+        title: "Add Item"
+    });
+
+    addWindow.loadURL(url.format({
+        pathname: path.join(__dirname, 'add.html'),
+        protocol: 'file:',
+        slashes: true
+    }))
+}
+
 // (4) CREATE MENU TEMPLATE
 // When you create a menu in electron, its just an array of objects
 const mainMenuTemplate = [
@@ -32,20 +51,22 @@ const mainMenuTemplate = [
         label: 'File', // the heading/label of the menu tab
         submenu:[
             {
-                label: "Add Item"
+                label: "Add Item", // When we 'click' add item, we call a function
+                click() {
+                    createAddWindow();
+                }
             },
             {
                 label: "Clear Items"
             },
             {
                 label: "Quit", // Click File ---
-                // adding an accelerator to define shortcuts to performing an action. 'darwin' is what we'd expect on a Mac and the shortcut would be Command+Q
+                // adding an accelerator to define shortcuts to performing an action. 'darwin' is what we'd expect on a Mac and the shortcut would be Command+Q. 
                 accelerator: process.platform == 'darwin' ? 'Command+Q' : 'Ctrl+Q', // This <expression> ? <do this> : <else do this> is called a turnary operator. Basically an if statement.
-                click() {//                     --> Click Quit
+                click() { //                     --> Click Quit
                     app.quit(); 
                 }
             }
         ]
     }
 ];
-
