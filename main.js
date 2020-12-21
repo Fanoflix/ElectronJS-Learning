@@ -39,6 +39,8 @@ const mainMenuTemplate = [
             },
             {
                 label: "Quit", // Click File ---
+                // adding an accelerator to define shortcuts to performing an action. 'darwin' is what we'd expect on a Mac and the shortcut would be Command+Q
+                accelerator: process.platform == 'darwin' ? 'Command+Q' : 'Ctrl+Q', // This <expression> ? <do this> : <else do this> is called a turnary operator. Basically an if statement.
                 click() {//                     --> Click Quit
                     app.quit(); 
                 }
