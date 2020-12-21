@@ -8,7 +8,7 @@ let mainWindow;
 let addWindow; // (9)
 
 // (1) Listen for app to be ready
-app.on('ready', function() {
+app.on('ready', () => {
     // (2) Create new window
     mainWindow = new BrowserWindow({});
 
@@ -19,10 +19,15 @@ app.on('ready', function() {
         slashes: true
     })); // This was just a fancy way of passing in the file path to loadURL() --- We're passing "file://__dirname/main.html"
 
+    // (9) Quit the whole app when close
+    mainWindow.on('closed', () => {
+        app.quit();
+    });
+
     // (6) Build menu from template 
     const mainMenu = Menu.buildFromTemplate(mainMenuTemplate); //
     // (7) Insert Menu
-    Menu.setApplicationMenu(mainMenu)
+    Menu.setApplicationMenu(mainMenu);
 });
 
 // (8) Handle create add window
@@ -40,8 +45,8 @@ function createAddWindow(){
         pathname: path.join(__dirname, 'add.html'),
         protocol: 'file:',
         slashes: true
-    }))
-}
+    }));
+};
 
 // (4) CREATE MENU TEMPLATE
 // When you create a menu in electron, its just an array of objects
