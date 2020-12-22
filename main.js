@@ -81,7 +81,7 @@ const mainMenuTemplate = [
                 click() { //                     --> Click Quit
                     app.quit(); 
                 }
-            }
+            },
         ]
     }
 ];
@@ -90,4 +90,23 @@ const mainMenuTemplate = [
 // if the app is run on a mac, add empty object to menu, to prevent "electron" be printed as a tab instead of our own label: "File"
 if (process.platform == 'darwin'){
     mainMenuTemplate.unshift({}) // unshift is an array method, which adds on to the begininng of the array. Here our mainMenuTeplate is the array (of objects)
-}
+};
+
+// Add developer tools if not in production
+if (process.env.NODE_ENV !== 'production') {
+    mainMenuTemplate.push({
+        label: 'Developer Tools',
+        submenu: [
+            {
+                label: "Toggle Dev Tools",
+                accelerator: "CmdOrCtrl+I",
+                click(item, focusedWindow){ // passing focuesd window because we want the dev tools to open in the focused window (window we're currently on). Its also important to pass 'item' or you'll get an error.    
+                    focusedWindow.toggleDevTools(); // toggleDevTools is a pre-defined function.
+                }
+            },
+            {
+                role: 'reload', // adding this object to the array has taken care of everything; from the label to reload's functionality aswell as the keyboard shortcut.
+            }
+        ]
+    })
+};
