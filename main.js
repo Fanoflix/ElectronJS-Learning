@@ -7,6 +7,11 @@ const {app, BrowserWindow, Menu} = electron; // (5) Import Menu from electron
 let mainWindow;
 let addWindow; // (9)
 
+// UNDERSTANDING path.join: The line below will print: "D:\Ammar\Github Repo\ElectronJS-Learning\add.html" basically the full path of the current directory. ------|
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+console.log(path.join(__dirname, 'add.html')) //-------------------------------------------------------------------------------------------------------------------|
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+
 // (1) Listen for app to be ready
 app.on('ready', () => {
     // (2) Create new window
@@ -80,3 +85,9 @@ const mainMenuTemplate = [
         ]
     }
 ];
+
+// The problem with mac is that, by default, regardless of what label you provide, it will show "electron" as the first menu tab. We fix that by...
+// if the app is run on a mac, add empty object to menu, to prevent "electron" be printed as a tab instead of our own label: "File"
+if (process.platform == 'darwin'){
+    mainMenuTemplate.unshift({}) // unshift is an array method, which adds on to the begininng of the array. Here our mainMenuTeplate is the array (of objects)
+}
