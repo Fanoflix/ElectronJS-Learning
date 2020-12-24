@@ -16,7 +16,7 @@
     const {ipcRenderer} = electron;
     const ul = document.querySelector('ul');
 
-    ipcRenderer.on('item:add', function(event, itemFromMain) {
+    ipcRenderer.on('item_and_top', function(event, formData) {
         const li = document.createElement('li'); // creating the list element
 
         // 1st Method of adding itemFromMain's value to <li> tags(Long one, from the tutorial video)
@@ -25,8 +25,22 @@
         //ul.appendChild(li)
 
         // 2nd Method (Short one)
-        li.innerHTML = itemFromMain
-        ul.appendChild(li)
+        li.innerHTML = formData.item
+        if (formData.top) { // If the user wants to insert the item at the top of the list
+            ul.prepend(li)
+        } else {
+            ul.appendChild(li)
+        }
+    });
+
+    ipcRenderer.on('clear_items', () => {
+        
     });
 </script>
+
+<style>
+    body{
+        color: rgb(145, 145, 145);
+    }
+</style>
 </html>

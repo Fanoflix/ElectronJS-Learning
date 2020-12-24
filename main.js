@@ -1,8 +1,10 @@
 const electron = require('electron');
 const url = require('url'); // using this at line 15
 const path = require('path'); // using this at line 16
+const { watchFile } = require('fs');
+const { time } = require('console');
 
-const {app, BrowserWindow, Menu, ipcMain} = electron; // (5) Import Menu from electron
+const {app, BrowserWindow, Menu, ipcMain, screen} = electron; // (5) Import Menu from electron
 
 let mainWindow;
 let addWindow; // (9)
@@ -15,9 +17,12 @@ console.log(path.join(__dirname, 'add.html')) //--------------------------------
 // (1) Listen for app to be ready
 app.on('ready', () => {
     // (2) Create new window
-    mainWindow = new BrowserWindow({
+    mainWindow = new BrowserWindow({ // .maximize() window will be maximized
+        backgroundColor: '#2e2c29',
+        // transparent: true,
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: true,
+        
         }
     });
 
@@ -45,8 +50,8 @@ app.on('ready', () => {
 // - Load the HTML file using loadURL
 function createAddWindow(){
     addWindow = new BrowserWindow({ // this time we'll provide it with some options like height, width etc;
-        width: 400,
-        height: 200,
+        width: 600,
+        height: 800,
         title: "Add Item",
         webPreferences: {
             nodeIntegration: true
@@ -65,12 +70,10 @@ function createAddWindow(){
     })
 };
 
-// Catch item:add << USE ipcMain.on('<id-of-item-to-catch>' , function) >> to catch a sent element
-ipcMain.on('item:add', function(event, itemFromAddWindow) {
-    mainWindow.webContents.send('item:add', itemFromAddWindow); // Comming from the addWindow -> Now sending it to the mainWindow
-    addWindow.close(); // closing Add Window
-
-    // Next step is to catch in the main-window, over at main.html
+// Catch formData << USE ipcMain.on('<id-of-item-to-catch>' , function) >> to catch a sent element
+ipcMain.on("item_and_top", function(event, formData) {
+    console.log(formData.item + " and:  "  + formData.top) // prints "<entered string> and:  true/false"
+    mainWindow.webContents.send('item_and_top', formData)    
 });
 
 
@@ -83,12 +86,16 @@ const mainMenuTemplate = [
         submenu:[
             {
                 label: "Add Item", // When we 'click' add item, we call a function
+                accelerator: "CmdOrCtrl+Shift+A",
                 click() {
                     createAddWindow();
                 }
             },
             {
-                label: "Clear Items"
+                label: "Clear Items",
+                click() {
+                    mainWindow.webContents.send("clear_items");
+                }
             },
             {
                 label: "Quit", // Click File ---

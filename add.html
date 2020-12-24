@@ -8,8 +8,10 @@
         <div>
             <label>Enter Item</label>
             <input type="text" id="item" autofocus> <!-- autoFocus will make this input field already focused after loading-->
+            <br><input  type="checkbox" id="top"><label for="top"> Add Item to the top</label>
         </div>
         <button type="submit">Add Item</button>
+
     </form>
 </body>
 
@@ -24,12 +26,23 @@
 
     function submitForm(event) {
         event.preventDefault();
-        const itemToSend = document.querySelector('#item').value;
+        
+        // OLD - You can send one item only aswell (See previous commits to understand the line below)
+        //const itemToSend = document.querySelector('#item').value;
+
+
+        // SENDING AN OBJECT - Its very easy this way; Readable code, as seemingly only 1 parameter is passed, and easy to write.
+        var formData = {
+            item: document.querySelector('#item').value,
+            top: document.querySelector('#top').checked
+        }
+
+
 
         // To send an item: << ipcRenderer.send('<id-of-item-to-send>', <item-itself>)
 
             // Side note, ipcRenderer.send() sends the payload to the main process (where all our windows are defined)
-        ipcRenderer.send('item:add', itemToSend);
+        ipcRenderer.send('item_and_top', formData);
     };
 </script>
 </html>
