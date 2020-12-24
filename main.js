@@ -9,6 +9,11 @@ const {app, BrowserWindow, Menu, ipcMain, screen} = electron; // (5) Import Menu
 let mainWindow;
 let addWindow; // (9)
 
+// |||||||||||||||||||||||||||||||||||||||| --- TTD --- |||||||||||||||||||||||||||||||||||||||
+// Things left to do:
+// - Read up on how to prevent multiple instances in Electron! (Bookmarked)
+// ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
 // UNDERSTANDING path.join: The line below will print: "D:\Ammar\Github Repo\ElectronJS-Learning\add.html" basically the full path of the current directory. ------|
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
 console.log(path.join(__dirname, 'add.html')) //-------------------------------------------------------------------------------------------------------------------|
@@ -18,8 +23,7 @@ console.log(path.join(__dirname, 'add.html')) //--------------------------------
 app.on('ready', () => {
     // (2) Create new window
     mainWindow = new BrowserWindow({ // .maximize() window will be maximized
-        backgroundColor: '#2e2c29',
-        // transparent: true,
+        backgroundColor: '#2b2b2b',
         webPreferences: {
             nodeIntegration: true,
         
@@ -52,6 +56,8 @@ function createAddWindow(){
     addWindow = new BrowserWindow({ // this time we'll provide it with some options like height, width etc;
         width: 600,
         height: 800,
+        backgroundColor: '#2b2b2b',
+        opacity: 1,
         title: "Add Item",
         webPreferences: {
             nodeIntegration: true
@@ -72,8 +78,9 @@ function createAddWindow(){
 
 // Catch formData << USE ipcMain.on('<id-of-item-to-catch>' , function) >> to catch a sent element
 ipcMain.on("item_and_top", function(event, formData) {
-    console.log(formData.item + " and:  "  + formData.top) // prints "<entered string> and:  true/false"
-    mainWindow.webContents.send('item_and_top', formData)    
+    console.log(formData.item + " and:  "  + formData.top); // prints "<entered string> and:  true/false"
+    mainWindow.webContents.send('item_and_top', formData);
+    addWindow.close();
 });
 
 
@@ -94,7 +101,7 @@ const mainMenuTemplate = [
             {
                 label: "Clear Items",
                 click() {
-                    mainWindow.webContents.send("clear_items");
+                    mainWindow.webContents.send("clear_items"); // Just sending a message
                 }
             },
             {

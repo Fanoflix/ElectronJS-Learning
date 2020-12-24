@@ -1,17 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <title>Add Shopping List Item</title>
 </head>
 <body>
-    <form>
+    <form style="margin: 10%;">
         <div>
-            <label>Enter Item</label>
-            <input type="text" id="item" autofocus> <!-- autoFocus will make this input field already focused after loading-->
-            <br><input  type="checkbox" id="top"><label for="top"> Add Item to the top</label>
+            <label style="display:flex; width:100%; justify-content: center; font-variant:small-caps; font-size:20px;">Enter Item</label>
+            <input style="display:flex; width:75%; margin-left: 12.5%;justify-content: center" type="text" id="item" autofocus> <!-- autoFocus will make this input field already focused after loading-->
+            <!-- <br><input  type="checkbox" id="top"><label for="top"> Add Item to the top</label> -->
+            <br>
+            <label style="display:flex; width:100%; justify-content: center">
+                <input class="indeterminate-checkbox top" type="checkbox" />
+                <span>Add at the top of the list</span>
+              </label>
         </div>
-        <button type="submit">Add Item</button>
-
+        <button type="submit" class="btn-floating waves-effect waves-light red" style="display:flex; justify-content:center">+</button>
+        
     </form>
 </body>
 
@@ -34,10 +40,8 @@
         // SENDING AN OBJECT - Its very easy this way; Readable code, as seemingly only 1 parameter is passed, and easy to write.
         var formData = {
             item: document.querySelector('#item').value,
-            top: document.querySelector('#top').checked
+            top: document.querySelector('.top').checked
         }
-
-
 
         // To send an item: << ipcRenderer.send('<id-of-item-to-send>', <item-itself>)
 
@@ -45,4 +49,10 @@
         ipcRenderer.send('item_and_top', formData);
     };
 </script>
+
+<style>
+    body{
+        color: white;
+    }
+</style>
 </html>

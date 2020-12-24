@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <title>Shopping List</title>
 </head>
 <body>
-    <h1>Shopping List</h1>
+    <nav>
+        <div class="nav-wrapper" style="background-color: rgb(70, 70, 70);">
+            <a class="brand-logo center" style="color: rgb(132, 132, 132); text-shadow: 0px 12px 10px rgb(0, 0, 0); font-variant: small-caps"> Shopping List </a>
+        </div>
+    </nav>
     <!-- Putting items in a ul -->
     <ul>
 
@@ -16,13 +21,13 @@
     const {ipcRenderer} = electron;
     const ul = document.querySelector('ul');
 
+    // catching "item_and_top" which is sent when the user adds something in the add window
     ipcRenderer.on('item_and_top', function(event, formData) {
+        ul.className = 'collection'
         const li = document.createElement('li'); // creating the list element
-
-        // 1st Method of adding itemFromMain's value to <li> tags(Long one, from the tutorial video)
-        //const itemText = document.createTextNode(itemFromMain); // creating text node
-        //li.appendChild(itemText); // adding the newly made text to the newly made list elemt
-        //ul.appendChild(li)
+        li.className = 'collection-item'
+        ul.style = "border:0px; width:80%; margin-left: 10%"
+        li.style = "user-select: none; border:2px solid black; margin-top: 5px; background-color: rgb(38,38,38); color: gray; "
 
         // 2nd Method (Short one)
         li.innerHTML = formData.item
@@ -33,14 +38,23 @@
         }
     });
 
+    // catching "clear_items" which is sent when user tries to clear
     ipcRenderer.on('clear_items', () => {
-        
+        ul.innerHTML = '';
     });
+
+    // Remove indivisual item
+    ul.addEventListener('dblclick', removeItem); // Listening for a double click on a ul item, and calling removeItem function
+
+    function removeItem(event) {
+        if(event.target.tagName != 'UL') {event.target.remove();} // So if we accidentally click a liiiiil bit above the border of an li element, we don't accidentally remove the whole ul tag.
+        if (ul.children.length == 0) {
+            ul.className = '';
+        }
+    };
 </script>
 
-<style>
-    body{
-        color: rgb(145, 145, 145);
-    }
-</style>
+
+
 </html>
+
