@@ -9,6 +9,13 @@ const {app, BrowserWindow, Menu, ipcMain, screen} = electron; // (5) Import Menu
 let mainWindow;
 let addWindow; // (9)
 
+
+// SETTING ENVIRONMENT
+process.env.NODE_ENV = 'production'; // We won't see developer's tools now.
+
+// PACKAGING THE APP
+// LINK: https://www.christianengvall.se/electron-packager-tutorial/
+
 // |||||||||||||||||||||||||||||||||||||||| --- TTD --- |||||||||||||||||||||||||||||||||||||||
 // Things left to do:
 // - Read up on how to prevent multiple instances in Electron! (Bookmarked)
