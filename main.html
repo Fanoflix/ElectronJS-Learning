@@ -5,5 +5,28 @@
 </head>
 <body>
     <h1>Shopping List</h1>
+    <!-- Putting items in a ul -->
+    <ul>
+
+    </ul>
 </body>
+
+<script>
+    const electron = require('electron');
+    const {ipcRenderer} = electron;
+    const ul = document.querySelector('ul');
+
+    ipcRenderer.on('item:add', function(event, itemFromMain) {
+        const li = document.createElement('li'); // creating the list element
+
+        // 1st Method of adding itemFromMain's value to <li> tags(Long one, from the tutorial video)
+        //const itemText = document.createTextNode(itemFromMain); // creating text node
+        //li.appendChild(itemText); // adding the newly made text to the newly made list elemt
+        //ul.appendChild(li)
+
+        // 2nd Method (Short one)
+        li.innerHTML = itemFromMain
+        ul.appendChild(li)
+    });
+</script>
 </html>

@@ -2,7 +2,7 @@ const electron = require('electron');
 const url = require('url'); // using this at line 15
 const path = require('path'); // using this at line 16
 
-const {app, BrowserWindow, Menu} = electron; // (5) Import Menu from electron
+const {app, BrowserWindow, Menu, ipcMain} = electron; // (5) Import Menu from electron
 
 let mainWindow;
 let addWindow; // (9)
@@ -15,7 +15,11 @@ console.log(path.join(__dirname, 'add.html')) //--------------------------------
 // (1) Listen for app to be ready
 app.on('ready', () => {
     // (2) Create new window
-    mainWindow = new BrowserWindow({});
+    mainWindow = new BrowserWindow({
+        webPreferences: {
+            nodeIntegration: true
+        }
+    });
 
     // (3) Load HTML file into the window
     mainWindow.loadURL(url.format({
@@ -43,7 +47,10 @@ function createAddWindow(){
     addWindow = new BrowserWindow({ // this time we'll provide it with some options like height, width etc;
         width: 400,
         height: 200,
-        title: "Add Item"
+        title: "Add Item",
+        webPreferences: {
+            nodeIntegration: true
+        }
     });
 
     addWindow.loadURL(url.format({
@@ -57,6 +64,15 @@ function createAddWindow(){
         addWindow = null;
     })
 };
+
+// Catch item:add << USE ipcMain.on('<id-of-item-to-catch>' , function) >> to catch a sent element
+ipcMain.on('item:add', function(event, itemFromAddWindow) {
+    mainWindow.webContents.send('item:add', itemFromAddWindow); // Comming from the addWindow -> Now sending it to the mainWindow
+    addWindow.close(); // closing Add Window
+
+    // Next step is to catch in the main-window, over at main.html
+});
+
 
 // (4) CREATE MENU TEMPLATE
 // When you create a menu in electron, its just an array of objects

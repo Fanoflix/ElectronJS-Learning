@@ -12,4 +12,24 @@
         <button type="submit">Add Item</button>
     </form>
 </body>
+
+<script>
+    // Including modules (require)
+    const electron = require('electron'); // require basically tells the current script file to include this (path/<file>).
+    // Importing from the modules we included
+    const {ipcRenderer} = electron;
+
+    const form = document.querySelector('form');
+    form.addEventListener('submit', submitForm);
+
+    function submitForm(event) {
+        event.preventDefault();
+        const itemToSend = document.querySelector('#item').value;
+
+        // To send an item: << ipcRenderer.send('<id-of-item-to-send>', <item-itself>)
+
+            // Side note, ipcRenderer.send() sends the payload to the main process (where all our windows are defined)
+        ipcRenderer.send('item:add', itemToSend);
+    };
+</script>
 </html>
