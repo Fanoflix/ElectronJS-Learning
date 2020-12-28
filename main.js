@@ -33,7 +33,6 @@ app.on('ready', () => {
         backgroundColor: '#2b2b2b',
         webPreferences: {
             nodeIntegration: true,
-        
         }
     });
 
@@ -118,7 +117,7 @@ const mainMenuTemplate = [
                 click() { //                     --> Click Quit
                     app.quit(); 
                 }
-            },
+            }
         ]
     }
 ];
