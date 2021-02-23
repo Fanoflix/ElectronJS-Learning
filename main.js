@@ -1,10 +1,10 @@
 const electron = require('electron');
 const url = require('url'); // using this at line 15
 const path = require('path'); // using this at line 16
-const { watchFile } = require('fs');
+
 const { time } = require('console');
 
-const {app, BrowserWindow, Menu, ipcMain, screen} = electron; // (5) Import Menu from electron
+const {app, BrowserWindow, Menu, ipcMain} = electron; // (5) Import Menu from electron
 
 let mainWindow;
 let addWindow; // (9)
@@ -18,7 +18,7 @@ process.env.NODE_ENV = 'production'; // We won't see developer's tools now.
 
 // |||||||||||||||||||||||||||||||||||||||| --- TTD --- |||||||||||||||||||||||||||||||||||||||
 // Things left to do:
-// - Read up on how to prevent multiple instances in Electron! (Bookmarked)
+// - Read up on how to prevent multiple instances of the whole app, or of a sub-window of the app! (Bookmarked)
 // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 // UNDERSTANDING path.join: The line below will print: "D:\Ammar\Github Repo\ElectronJS-Learning\add.html" basically the full path of the current directory. ------|
